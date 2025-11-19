@@ -10,7 +10,9 @@ const HomeScreen = () => {
       <div className="max-w-7xl mx-auto pt-6 px-4 md:px-8">
         
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl md:text-4xl font-bold">Marketplace</h1>
+          {/* --- CHANGE IS HERE --- */}
+          <h1 className="text-2xl md:text-4xl font-bold">Campus Marketplace</h1>
+          
           {/* Hidden on desktop because we have the button in the navbar now */}
           <button onClick={() => navigate('/create')} className="md:hidden bg-primary hover:bg-green-400 px-4 py-2 rounded-full font-bold text-black text-sm transition">
             + Post Item
@@ -23,7 +25,7 @@ const HomeScreen = () => {
             <input type="text" placeholder="Search for textbooks, furniture..." className="ml-3 flex-1 bg-transparent border-none outline-none text-white placeholder-textMuted"/>
           </div>
           
-          {/* Categories: Scrollable on mobile, standard row on desktop */}
+          {/* Categories */}
           <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
             {['All', 'Books', 'Electronics', 'Furniture', 'Clothing', 'Sports', 'Dorm Essentials'].map((cat, i) => (
               <button key={i} className={`px-6 py-2 rounded-full text-sm whitespace-nowrap transition hover:bg-opacity-80 ${i===0 ? 'bg-primary text-black font-bold' : 'bg-surface text-textMuted hover:bg-secondary hover:text-primary'}`}>
@@ -33,7 +35,7 @@ const HomeScreen = () => {
           </div>
         </div>
 
-        {/* Responsive Grid: 2 cols on mobile, 3 on tablet, 4 on desktop */}
+        {/* Responsive Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
             <div key={item} onClick={() => navigate('/item/1')} className="cursor-pointer group bg-surface p-3 rounded-2xl hover:bg-secondary transition duration-300">
