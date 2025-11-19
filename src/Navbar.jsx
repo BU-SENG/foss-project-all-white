@@ -17,11 +17,12 @@ const Navbar = () => {
 
   return (
     <>
-      {/* DESKTOP TOP NAVIGATION (Hidden on mobile) */}
+      {/* DESKTOP TOP NAVIGATION */}
       <div className="hidden md:flex fixed top-0 left-0 right-0 bg-background border-b border-surface z-50 px-8 py-4 items-center justify-between">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
             <ShoppingBag className="text-primary" size={32} />
-            <span className="text-2xl font-bold text-white tracking-tight">Marketplace</span>
+            {/* --- CHANGE IS HERE --- */}
+            <span className="text-2xl font-bold text-white tracking-tight">Campus Marketplace</span>
         </div>
 
         <div className="flex items-center gap-8">
@@ -44,7 +45,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* MOBILE BOTTOM NAVIGATION (Hidden on desktop) */}
+      {/* MOBILE BOTTOM NAVIGATION */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-surface px-6 py-3 z-50">
         <div className="flex justify-between items-center">
           {tabs.map((tab) => (
