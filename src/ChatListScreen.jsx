@@ -1,7 +1,10 @@
 import React from 'react';
 import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const ChatListScreen = () => {
+  const navigate = useNavigate(); // Initialize hook
+
   const chats = [
     { id: 1, name: 'Aria Brooks', msg: 'Hey, is the textbook still available? I can meet tomorrow.', time: '10:30 AM', unread: 2 },
     { id: 2, name: 'Leo Martinez', msg: 'Perfect! I can meet you at the library entrance.', time: '9:45 AM', unread: 0 },
@@ -20,7 +23,11 @@ const ChatListScreen = () => {
 
         <div className="space-y-2">
           {chats.map((chat) => (
-            <div key={chat.id} className="flex items-center cursor-pointer hover:bg-surface p-4 rounded-2xl transition group border border-transparent hover:border-surface/50">
+            <div 
+              key={chat.id} 
+              onClick={() => navigate(`/chat/${chat.id}`)} // Navigate to specific chat on click
+              className="flex items-center cursor-pointer hover:bg-surface p-4 rounded-2xl transition group border border-transparent hover:border-surface/50"
+            >
               <img src={`https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80`} className="w-14 h-14 rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition" />
               <div className="flex-1 ml-4">
                 <div className="flex justify-between mb-1">

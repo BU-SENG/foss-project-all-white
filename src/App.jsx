@@ -18,7 +18,10 @@ function App() {
           <Route path="/" element={<HomeScreen />} />
           <Route path="/create" element={<CreateListingScreen />} />
           <Route path="/chat" element={<ChatListScreen />} />
-          <Route path="/chat/:id" element={<ChatScreen />} /> {/* New Dynamic Route */}
+          
+          {/* New Dynamic Route for Chatting */}
+          <Route path="/chat/:id" element={<ChatScreen />} />
+          
           <Route path="/profile" element={<MyListingsScreen />} />
           <Route path="/item/:id" element={<ItemDetailScreen />} />
         </Routes>
