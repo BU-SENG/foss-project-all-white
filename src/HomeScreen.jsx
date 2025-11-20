@@ -86,7 +86,7 @@ const HomeScreen = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const categories = ['All', 'Books', 'Electronics', 'Furniture', 'Clothing', 'Sports', 'Dorm Essentials'];
+  const categories = ['All', 'Books', 'Electronics', 'Furniture', 'Clothing', 'Sports', 'Dorm Essentials', 'Others'];
 
   return (
     <div className="min-h-screen bg-background text-white pb-24 font-sans">
@@ -94,7 +94,6 @@ const HomeScreen = () => {
         
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl md:text-4xl font-bold">Campus Marketplace</h1>
-          {/* REMOVED THE GREEN POST ITEM BUTTON FROM HERE */}
         </div>
 
         <div className="mb-8">
@@ -147,8 +146,9 @@ const HomeScreen = () => {
               </div>
             ))
           ) : (
+            // --- CHANGED THIS MESSAGE ---
             <div className="col-span-full py-12 text-center text-textMuted">
-              <p className="text-lg">No items found matching "{searchQuery}"</p>
+              <p className="text-lg">No items found</p>
             </div>
           )}
         </div>

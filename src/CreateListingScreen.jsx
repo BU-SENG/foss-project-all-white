@@ -46,7 +46,7 @@ const CreateListingScreen = () => {
             
             <div>
                 <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Price</label>
-                <div className="flex items-center bg-surface rounded-xl border border-transparent focus:border-primary px-4 transition">
+                <div className="flex items-center bg-surface rounded-xl border border-transparent focus-within:border-primary px-4 transition">
                     <span className="text-textMuted mr-2 text-lg">₦</span>
                     <input type="number" className="bg-transparent text-white w-full p-4 outline-none text-lg" placeholder="0.00" />
                 </div>
@@ -60,10 +60,11 @@ const CreateListingScreen = () => {
                         <option>Books</option>
                         <option>Electronics</option>
                         <option>Furniture</option>
-                        {/* --- ADDED MISSING CATEGORIES HERE --- */}
                         <option>Clothing</option>
                         <option>Sports</option>
                         <option>Dorm Essentials</option>
+                        {/* --- ADDED OTHERS HERE --- */}
+                        <option>Others</option>
                     </select>
                     <ChevronDown className="absolute right-4 top-5 text-textMuted pointer-events-none" size={20} />
                 </div>
