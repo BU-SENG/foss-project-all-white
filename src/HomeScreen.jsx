@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { Search, ChevronDown } from 'lucide-react'; // Added ChevronDown import
 import { useNavigate } from 'react-router-dom';
-import { products } from './data'; // Using the centralized data
+import { products } from './data'; 
 
 const HomeScreen = () => {
   const navigate = useNavigate();
+  
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('All'); // --- NEW STATE ---
 
   const filteredProducts = products.filter(product => {
+    // 1. Check Category
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+    
+    // 2. Check Search Text
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+
+    // 3. Check Status (Active vs Sold) --- NEW LOGIC ---
+    const matchesStatus = selectedStatus === 'All' || product.status === selectedStatus;
+
+    return matchesCategory && matchesSearch && matchesStatus;
   });
 
   const categories = ['All', 'Books', 'Electronics', 'Furniture', 'Clothing', 'Sports', 'Dorm Essentials', 'Others'];
@@ -24,24 +33,53 @@ const HomeScreen = () => {
           <h1 className="text-2xl md:text-4xl font-bold">Campus Marketplace</h1>
         </div>
 
-        <div className="mb-8">
-          <div className="bg-surface flex items-center px-4 py-3 rounded-lg mb-4 w-full md:max-w-2xl border border-transparent focus-within:border-primary transition">
-            <Search className="text-textMuted" size={20} />
-            <input 
-              type="text" 
-              placeholder="Search for textbooks, furniture..." 
-              className="ml-3 flex-1 bg-transparent border-none outline-none text-white placeholder-textMuted"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+        <div className="mb-8 space-y-4">
+          
+          {/* Row containing Search Bar and Status Filter */}
+          <div className="flex flex-col md:flex-row gap-4">
+            
+            {/* Search Bar */}
+            <div className="bg-surface flex items-center px-4 py-3 rounded-lg flex-1 border border-transparent focus-within:border-primary transition">
+              <Search className="text-textMuted" size={20} />
+              <input 
+                type="text" 
+                placeholder="Search for textbooks, furniture..." 
+                className="ml-3 flex-1 bg-transparent border-none outline-none text-white placeholder-textMuted"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {/* --- NEW STATUS DROPDOWN --- */}
+            <div className="relative w-full md:w-48">
+                <select 
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value)}
+                    className="w-full bg-surface text-white p-3 pl-4 pr-10 rounded-lg border border-transparent focus:border-primary outline-none appearance-none cursor-pointer font-medium"
+                >
+                    <option value="All">Any Status</option>
+                    <option value="Active">Active Only</option>
+                    <option value="Sold">Sold Items</option>
+                </select>
+                <ChevronDown className="absolute right-4 top-3.5 text-textMuted pointer-events-none" size={20} />
+            </div>
+
           </div>
           
+          {/* Categories */}
           <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
             {categories.map((cat, i) => (
               <button 
                 key={i} 
-                onClick={() => { setSelectedCategory(cat); setSearchQuery(''); }} 
-                className={`px-6 py-2 rounded-full text-sm whitespace-nowrap transition hover:bg-opacity-80 ${selectedCategory === cat ? 'bg-primary text-black font-bold' : 'bg-surface text-textMuted hover:bg-secondary hover:text-primary'}`}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setSearchQuery('');
+                }} 
+                className={`px-6 py-2 rounded-full text-sm whitespace-nowrap transition hover:bg-opacity-80 ${
+                  selectedCategory === cat 
+                    ? 'bg-primary text-black font-bold' 
+                    : 'bg-surface text-textMuted hover:bg-secondary hover:text-primary'
+                }`}
               >
                 {cat}
               </button>
@@ -49,6 +87,7 @@ const HomeScreen = () => {
           </div>
         </div>
 
+        {/* Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((item) => (
@@ -59,8 +98,6 @@ const HomeScreen = () => {
               >
                 <div className="w-full h-40 md:h-56 rounded-xl mb-3 bg-gray-700 overflow-hidden relative">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
-                  
-                  {/* --- DYNAMIC STATUS BADGE --- */}
                   <div className={`absolute top-2 right-2 px-2 py-1 rounded-md backdrop-blur-sm ${
                     item.status === 'Active' ? 'bg-black/60 text-primary' : 'bg-gray-800/90 text-gray-400'
                   }`}>
