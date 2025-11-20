@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Search, PlusCircle, MessageSquare, User, ShoppingBag } from 'lucide-react';
+import { Home, PlusCircle, MessageSquare, User, ShoppingBag } from 'lucide-react'; // Removed 'Search' icon import
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const tabs = [
     { name: 'Home', icon: Home, path: '/' },
-    { name: 'Search', icon: Search, path: '/search' },
+    // Removed Search Tab from here
     { name: 'Post', icon: PlusCircle, path: '/create', highlight: true },
     { name: 'Chat', icon: MessageSquare, path: '/chat' },
     { name: 'Profile', icon: User, path: '/profile' },
@@ -21,7 +21,6 @@ const Navbar = () => {
       <div className="hidden md:flex fixed top-0 left-0 right-0 bg-background border-b border-surface z-50 px-8 py-4 items-center justify-between">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
             <ShoppingBag className="text-primary" size={32} />
-            {/* --- CHANGE IS HERE --- */}
             <span className="text-2xl font-bold text-white tracking-tight">Campus Marketplace</span>
         </div>
 
@@ -47,7 +46,8 @@ const Navbar = () => {
 
       {/* MOBILE BOTTOM NAVIGATION */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-surface px-6 py-3 z-50">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center px-4"> 
+          {/* Added px-4 for better spacing since we have fewer items now */}
           {tabs.map((tab) => (
             <button 
               key={tab.name} 
