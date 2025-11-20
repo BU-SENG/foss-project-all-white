@@ -11,16 +11,18 @@ import mopImg from './assets/images/mop.jpeg';
 import chemBookImg from './assets/images/chemistry-textbook.jpg';
 
 const ItemDetailScreen = () => {
+  // 1. DEFINE HOOKS FIRST
   const navigate = useNavigate();
   const { id } = useParams(); 
   const { toggleSave, isSaved } = useSavedItems();
 
+  // 2. DEFINE THE DATA LIST SECOND (So it exists before we use it)
   const products = [
-    // --- ITEMS FROM HOME SCREEN (1-8) ---
     {
       id: 1,
       title: "Calculus Textbook",
       price: "₦5,000",
+      status: "Active",
       category: "Books",
       condition: "Used - Good",
       description: "Calculus Early Transcendentals (8th Edition). Used for two semesters but no missing pages. Highlights in chapter 4.",
@@ -33,6 +35,7 @@ const ItemDetailScreen = () => {
       id: 2,
       title: "Reusable Plastic Cup",
       price: "₦500",
+      status: "Active",
       category: "Dorm Essentials",
       condition: "New",
       description: "Hard plastic cup, never used. Got it as a gift but I have too many.",
@@ -45,6 +48,7 @@ const ItemDetailScreen = () => {
       id: 3,
       title: "Local Broom (Igbale)",
       price: "₦800",
+      status: "Active",
       category: "Dorm Essentials",
       condition: "New",
       description: "Strong traditional broom. Very effective for sweeping hostel floors. Brand new bundle.",
@@ -57,6 +61,7 @@ const ItemDetailScreen = () => {
       id: 4,
       title: "Cleaning Mop",
       price: "₦2,500",
+      status: "Active",
       category: "Dorm Essentials",
       condition: "Like New",
       description: "Standard mop with wooden handle. Only used once for move-in cleaning.",
@@ -69,6 +74,7 @@ const ItemDetailScreen = () => {
       id: 5,
       title: "Physics Textbook",
       price: "₦4,500",
+      status: "Active",
       category: "Books",
       condition: "Used - Fair",
       description: "Fundamentals of Physics. Cover is slightly worn but inside is clean. Perfect for 100 level.",
@@ -81,6 +87,7 @@ const ItemDetailScreen = () => {
       id: 6,
       title: "60 Leaves Exercise Book",
       price: "₦300",
+      status: "Active",
       category: "Books",
       condition: "New",
       description: "Unused exercise book. I have 5 pieces available if you need more.",
@@ -93,6 +100,7 @@ const ItemDetailScreen = () => {
       id: 7,
       title: "Disposable Plates (Pack)",
       price: "₦1,500",
+      status: "Active",
       category: "Dorm Essentials",
       condition: "New",
       description: "Sealed pack of 50 disposable plates. Great for parties or lazy days.",
@@ -105,6 +113,7 @@ const ItemDetailScreen = () => {
       id: 8,
       title: "Electric Iron",
       price: "₦8,000",
+      status: "Active",
       category: "Electronics",
       condition: "Used - Good",
       description: "Heavy duty pressing iron. Heats up very fast. Selling because I got a steam iron.",
@@ -119,6 +128,7 @@ const ItemDetailScreen = () => {
       id: 101,
       title: "Nike Air Max 270",
       price: "₦75,000",
+      status: "Active",
       category: "Clothing",
       condition: "Used - Like New",
       description: "Worn only twice. Size 43. Original box included. Selling because it's a bit tight for me.",
@@ -131,6 +141,7 @@ const ItemDetailScreen = () => {
       id: 102,
       title: "Chemistry Textbook",
       price: "₦15,000",
+      status: "Sold",
       category: "Books",
       condition: "Used - Fair",
       description: "Organic Chemistry by Klein. Some highlighting and notes in margins, but fully readable.",
@@ -141,6 +152,7 @@ const ItemDetailScreen = () => {
     }
   ];
 
+  // 3. EXECUTE LOGIC THIRD (Now that products exist, we can find one)
   const product = products.find(p => p.id === parseInt(id));
   const saved = product ? isSaved(product.id) : false;
 
@@ -182,6 +194,8 @@ const ItemDetailScreen = () => {
                     <button onClick={() => navigate(-1)} className="flex items-center text-textMuted hover:text-white transition"><ArrowLeft size={20} className="mr-2"/> Back</button>
                     <div className="flex gap-4">
                         <button className="flex items-center gap-2 text-textMuted hover:text-primary transition"><Share size={20}/> Share</button>
+                        
+                        {/* Desktop Save Button */}
                         <button onClick={() => toggleSave(product.id)} className={`flex items-center gap-2 transition ${saved ? "text-red-500" : "text-textMuted hover:text-white"}`}>
                             <Heart size={20} className={saved ? "fill-red-500" : ""} /> {saved ? "Saved" : "Save"}
                         </button>
@@ -222,8 +236,23 @@ const ItemDetailScreen = () => {
                 </div>
 
                 <div className="flex gap-4 md:static fixed bottom-0 left-0 right-0 bg-background md:bg-transparent border-t md:border-t-0 border-surface p-4 md:p-0 z-50">
-                    <button onClick={() => navigate('/chat/new')} className="flex-1 border-2 border-primary py-4 rounded-xl text-primary font-bold hover:bg-primary/10 transition flex justify-center items-center gap-2"><MessageCircle size={20} /> Chat with Seller</button>
-                    <button className="flex-1 bg-primary py-4 rounded-xl text-black font-bold hover:bg-green-400 transition shadow-lg shadow-green-900/20">Make Offer</button>
+                    <button 
+                        onClick={() => navigate('/chat/new')} 
+                        className="flex-1 border-2 border-primary py-4 rounded-xl text-primary font-bold hover:bg-primary/10 transition flex justify-center items-center gap-2"
+                    >
+                        <MessageCircle size={20} /> Chat with Seller
+                    </button>
+                    
+                    {/* --- Conditional 'Item Sold' Button --- */}
+                    {product.status === 'Active' ? (
+                        <button className="flex-1 bg-primary py-4 rounded-xl text-black font-bold hover:bg-green-400 transition shadow-lg shadow-green-900/20">
+                            Make Offer
+                        </button>
+                    ) : (
+                        <button disabled className="flex-1 bg-gray-700 py-4 rounded-xl text-gray-400 font-bold cursor-not-allowed">
+                            Item Sold
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
