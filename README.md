@@ -1,7 +1,7 @@
-## CAMPUS MARKETPLACE🏬
+## CAMPUS MARKETPLACE
 An online campus marketplace where students can buy and sell goods to their fellow students.
 
-## FEATURES 📲
+## FEATURES 
 -   Student account verification
 -   Buy and sell items within the campus
 -   Item search and categorization
@@ -13,7 +13,7 @@ You need to have all these installed for everything to work fine:
 -   **Git** - Version Control System
 -   **VSCode** - Integrated Development Environment
 
-## HOW TO USE THIS REPO 🛠️
+## HOW TO USE THIS REPO 
 1. Clone the project. Open your terminal and use the following command:
     ```bash
     git clone https://github.com/BU-SENG/foss-project-all-white.git
