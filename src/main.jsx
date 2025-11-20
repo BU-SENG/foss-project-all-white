@@ -2,13 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import { SavedProvider } from './SavedContext.jsx'
+
+// --- IMPORT THE PROVIDERS ---
+import { AuthProvider } from './AuthContext.jsx'
 import { ProductProvider } from './ProductContext.jsx'
-import { AuthProvider } from './AuthContext.jsx' // --- Import AuthProvider
+import { SavedProvider } from './SavedContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider> {/* --- Outer Wrap --- */}
+    {/* WRAP THE APP LIKE LAYERS OF AN ONION */}
+    <AuthProvider>
       <ProductProvider>
         <SavedProvider>
           <App />

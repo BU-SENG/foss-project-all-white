@@ -1,32 +1,41 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // By default, no user is logged in (null)
-  const [user, setUser] = useState(null);
+  // 1. Initialize state by checking Local Storage first
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('campusUser');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
-  // Simulate Login
-  const login = (email, password) => {
-    // In a real app, you would send this to a server.
-    // Here, we just simulate a successful login.
-    setUser({
+  // 2. Update Local Storage whenever user state changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('campusUser', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('campusUser');
+    }
+  }, [user]);
+
+  const login = (email) => {
+    const newUser = {
       name: "Student User",
       email: email,
       avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
-    });
+    };
+    setUser(newUser);
   };
 
-  // Simulate Signup
-  const signup = (name, email, password) => {
-    setUser({
+  const signup = (name, email) => {
+    const newUser = {
       name: name,
       email: email,
       avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
-    });
+    };
+    setUser(newUser);
   };
 
-  // Handle Logout
   const logout = () => {
     setUser(null);
   };
