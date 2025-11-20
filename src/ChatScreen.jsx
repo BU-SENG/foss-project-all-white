@@ -4,18 +4,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const ChatScreen = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the ID from the URL (e.g., "1" or "2")
+  const { id } = useParams(); 
   const [message, setMessage] = useState('');
 
-  // This simulates a database of users
+  // Updated User Database
   const users = {
-    1: { name: 'Aria Brooks', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80' },
-    2: { name: 'Leo Martinez', image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80' },
-    3: { name: 'Sarah Chen', image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80' },
-    'new': { name: 'Alex Johnson', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80' } // Default for "Chat with Seller"
+    1: { name: 'Jessica Eguasa', image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=200&q=80' },
+    2: { name: 'Chigere-Isaac', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80' },
+    3: { name: 'Roseline Edward', image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80' },
+    'new': { name: 'New Seller', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80' }
   };
 
-  // Select the user based on ID, or fallback to Alex if not found
   const currentUser = users[id] || users['new'];
   
   const [messages, setMessages] = useState([
@@ -31,14 +30,12 @@ const ChatScreen = () => {
 
   return (
     <div className="min-h-screen bg-background text-white flex flex-col">
-      {/* Header */}
       <div className="flex items-center justify-between px-4 py-4 bg-surface border-b border-white/5 shadow-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate(-1)} className="hover:bg-white/10 p-2 rounded-full transition">
             <ArrowLeft size={24} />
           </button>
           <div className="flex items-center gap-3">
-            {/* DYNAMIC IMAGE AND NAME */}
             <img src={currentUser.image} className="w-10 h-10 rounded-full object-cover" />
             <div>
               <h3 className="font-bold text-sm md:text-base">{currentUser.name}</h3>
@@ -52,7 +49,6 @@ const ChatScreen = () => {
         </div>
       </div>
 
-      {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-24 md:pb-28">
         {messages.map((msg) => (
           <div key={msg.id} className={`flex ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
@@ -72,7 +68,6 @@ const ChatScreen = () => {
         ))}
       </div>
 
-      {/* Input Area */}
       <div className="fixed bottom-0 left-0 right-0 bg-surface border-t border-white/5 p-4 pb-6 md:pb-4">
         <div className="max-w-3xl mx-auto flex items-center gap-2">
           <input 

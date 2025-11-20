@@ -5,33 +5,29 @@ import { useNavigate } from 'react-router-dom';
 const ChatListScreen = () => {
   const navigate = useNavigate();
 
-  // Updated Chat Data with specific Student Images
   const chats = [
     { 
       id: 1, 
-      name: 'Aria Brooks', 
+      name: 'Jessica Eguasa', 
       msg: 'Hey, is the textbook still available?', 
       time: '10:30 AM', 
       unread: 2,
-      // Female Student Image
-      image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80' 
+      image: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=200&q=80' 
     },
     { 
       id: 2, 
-      name: 'Leo Martinez', 
+      name: 'Chigere-Isaac', 
       msg: 'Perfect! I can meet you at the library.', 
       time: '9:45 AM', 
       unread: 0,
-      // Male Student Image
-      image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80'
+      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80'
     },
     { 
       id: 3, 
-      name: 'Sarah Chen', 
+      name: 'Roseline Edward', 
       msg: 'Is the price negotiable?', 
       time: 'Yesterday', 
       unread: 0,
-      // Female Student Image 2
       image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80'
     },
   ];
