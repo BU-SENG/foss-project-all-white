@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
-import { Search, ChevronDown } from 'lucide-react'; // Added ChevronDown import
+import { Search, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { products } from './data'; 
+import { useProducts } from './ProductContext'; // using Global State
 
 const HomeScreen = () => {
   const navigate = useNavigate();
+  const { products } = useProducts(); // Get all products from the "Cloud"
   
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('All'); // --- NEW STATE ---
+  const [selectedStatus, setSelectedStatus] = useState('All');
 
+  // --- THE FILTER LOGIC ---
   const filteredProducts = products.filter(product => {
     // 1. Check Category
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
     
-    // 2. Check Search Text
+    // 2. Check Search Text (Case Insensitive)
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
 
-    // 3. Check Status (Active vs Sold) --- NEW LOGIC ---
+    // 3. Check Status (Active vs Sold) - Allows hiding Sold items
     const matchesStatus = selectedStatus === 'All' || product.status === selectedStatus;
 
     return matchesCategory && matchesSearch && matchesStatus;
@@ -34,8 +36,7 @@ const HomeScreen = () => {
         </div>
 
         <div className="mb-8 space-y-4">
-          
-          {/* Row containing Search Bar and Status Filter */}
+          {/* Search & Status Filter Row */}
           <div className="flex flex-col md:flex-row gap-4">
             
             {/* Search Bar */}
@@ -50,7 +51,7 @@ const HomeScreen = () => {
               />
             </div>
 
-            {/* --- NEW STATUS DROPDOWN --- */}
+            {/* Status Dropdown */}
             <div className="relative w-full md:w-48">
                 <select 
                     value={selectedStatus}
@@ -63,10 +64,9 @@ const HomeScreen = () => {
                 </select>
                 <ChevronDown className="absolute right-4 top-3.5 text-textMuted pointer-events-none" size={20} />
             </div>
-
           </div>
           
-          {/* Categories */}
+          {/* Categories Scroll */}
           <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
             {categories.map((cat, i) => (
               <button 
@@ -87,7 +87,7 @@ const HomeScreen = () => {
           </div>
         </div>
 
-        {/* Grid */}
+        {/* Product Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((item) => (
@@ -98,6 +98,8 @@ const HomeScreen = () => {
               >
                 <div className="w-full h-40 md:h-56 rounded-xl mb-3 bg-gray-700 overflow-hidden relative">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                  
+                  {/* Status Badge */}
                   <div className={`absolute top-2 right-2 px-2 py-1 rounded-md backdrop-blur-sm ${
                     item.status === 'Active' ? 'bg-black/60 text-primary' : 'bg-gray-800/90 text-gray-400'
                   }`}>
