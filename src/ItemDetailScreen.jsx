@@ -1,19 +1,16 @@
 import React from 'react';
 import { ArrowLeft, Share, Heart, Star, MessageCircle, MapPin } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useProducts } from './ProductContext'; // Get Data
-import { useSavedItems } from './SavedContext'; // Get Save Logic
+import { useProducts } from './ProductContext';
+import { useSavedItems } from './SavedContext';
 
 const ItemDetailScreen = () => {
   const navigate = useNavigate();
   const { id } = useParams(); 
-  const { products } = useProducts(); // Get the full list from context
+  const { products } = useProducts();
   const { toggleSave, isSaved } = useSavedItems();
 
-  // Find the specific item by ID
   const product = products.find(p => p.id === parseInt(id));
-  
-  // Check if it is saved
   const saved = product ? isSaved(product.id) : false;
 
   if (!product) {
@@ -35,43 +32,36 @@ const ItemDetailScreen = () => {
             
             {/* Left Side: Image */}
             <div className="w-full md:w-1/2 relative h-96 md:h-[500px] bg-gray-800 md:rounded-3xl overflow-hidden">
-                <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
+                <img src={product.image_url} alt={product.title} className="w-full h-full object-cover" />
                 
-                {/* Mobile Header Actions */}
                 <div className="md:hidden absolute top-6 left-4 right-4 flex justify-between z-10">
                     <button onClick={() => navigate(-1)} className="bg-black/50 p-2 rounded-full"><ArrowLeft className="text-white" size={24} /></button>
                     <div className="flex gap-3">
-                        <button className="bg-black/50 p-2 rounded-full"><Share className="text-white" size={24} /></button>
-                        <button onClick={() => toggleSave(product.id)} className="bg-black/50 p-2 rounded-full">
-                            <Heart className={saved ? "fill-red-500 text-red-500" : "text-white"} size={24} />
-                        </button>
+                    <button className="bg-black/50 p-2 rounded-full"><Share className="text-white" size={24} /></button>
+                    <button onClick={() => toggleSave(product.id)} className="bg-black/50 p-2 rounded-full">
+                        <Heart className={saved ? "fill-red-500 text-red-500" : "text-white"} size={24} />
+                    </button>
                     </div>
                 </div>
             </div>
 
             {/* Right Side: Details */}
             <div className="w-full md:w-1/2 px-4 md:px-0 flex flex-col justify-center">
-                {/* Desktop Header Actions */}
                 <div className="hidden md:flex justify-between mb-6">
                     <button onClick={() => navigate(-1)} className="flex items-center text-textMuted hover:text-white transition"><ArrowLeft size={20} className="mr-2"/> Back</button>
                     <div className="flex gap-4">
                         <button className="flex items-center gap-2 text-textMuted hover:text-primary transition"><Share size={20}/> Share</button>
-                        <button 
-                            onClick={() => toggleSave(product.id)} 
-                            className={`flex items-center gap-2 transition ${saved ? "text-red-500" : "text-textMuted hover:text-white"}`}
-                        >
+                        <button onClick={() => toggleSave(product.id)} className={`flex items-center gap-2 transition ${saved ? "text-red-500" : "text-textMuted hover:text-white"}`}>
                             <Heart size={20} className={saved ? "fill-red-500" : ""} /> {saved ? "Saved" : "Save"}
                         </button>
                     </div>
                 </div>
 
-                {/* Title & Price */}
                 <div className="flex justify-between items-start mb-4">
                     <h1 className="text-3xl md:text-5xl font-bold text-white flex-1 mr-4 leading-tight">{product.title}</h1>
                     <span className="text-primary text-3xl md:text-4xl font-bold">{product.price}</span>
                 </div>
 
-                {/* Tags */}
                 <div className="flex gap-2 mb-6">
                     <span className="bg-surface border border-secondary text-textMuted px-3 py-1 rounded-md text-sm">{product.category}</span>
                     <span className="bg-surface border border-secondary text-green-400 px-3 py-1 rounded-md text-sm">{product.condition}</span>
@@ -81,14 +71,16 @@ const ItemDetailScreen = () => {
                     {product.description}
                 </p>
 
-                {/* Seller Card */}
+                {/* Seller Card (Fixed) */}
                 <div className="bg-surface p-4 rounded-2xl mb-8 flex items-center border border-gray-800">
-                    <img src={product.sellerImage} className="w-14 h-14 rounded-full object-cover" />
+                    <img src={product.sellerImage} className="w-14 h-14 rounded-full object-cover" alt={product.seller_name} />
                     <div className="ml-4 flex-1">
-                        <h4 className="text-white font-bold text-lg">{product.seller}</h4>
+                        {/* --- FIX: Using seller_name --- */}
+                        <h4 className="text-white font-bold text-lg">{product.seller_name}</h4>
                         <div className="flex items-center text-textMuted text-sm">
                             <MapPin size={14} className="mr-1" />
-                            {product.location}
+                            {/* --- FIX: Using hall --- */}
+                            {product.hall}
                         </div>
                     </div>
                     <div className="text-right">
@@ -100,7 +92,6 @@ const ItemDetailScreen = () => {
                     </div>
                 </div>
 
-                {/* Footer Buttons */}
                 <div className="flex gap-4 md:static fixed bottom-0 left-0 right-0 bg-background md:bg-transparent border-t md:border-t-0 border-surface p-4 md:p-0 z-50">
                     <button 
                         onClick={() => navigate('/chat/new')} 
@@ -109,7 +100,7 @@ const ItemDetailScreen = () => {
                         <MessageCircle size={20} /> Chat with Seller
                     </button>
                     
-                    {/* Logic: Disable button if item is sold */}
+                    {/* Conditional 'Item Sold' Button */}
                     {product.status === 'Active' ? (
                         <button className="flex-1 bg-primary py-4 rounded-xl text-black font-bold hover:bg-green-400 transition shadow-lg shadow-green-900/20">
                             Make Offer

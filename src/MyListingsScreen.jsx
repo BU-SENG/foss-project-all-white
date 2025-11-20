@@ -7,23 +7,28 @@ import { useAuth } from './AuthContext';
 
 const MyListingsScreen = () => {
   const navigate = useNavigate();
+  
+  // 1. CONTEXTS
   const savedContext = useSavedItems();
   const productContext = useProducts();
   const authContext = useAuth();
 
+  // 2. STATE DEFINITIONS
   const [activeTab, setActiveTab] = useState('listings'); 
   const [isLoading, setIsLoading] = useState(true);
 
-  // Redirect Logic
+  // 3. REDIRECT LOGIC
   useEffect(() => {
+    // Check if authContext exists but user is null, redirect
     if (authContext && !authContext.user) {
       navigate('/login');
-    } else if (authContext && authContext.user) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    } else {
+      // If user exists, stop loading spinner
       setIsLoading(false); 
     }
   }, [authContext, navigate]);
 
+  // 4. SAFEGUARDS (Loading and Error Checks)
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center text-white">
@@ -32,16 +37,19 @@ const MyListingsScreen = () => {
     );
   }
 
+  // Final check to prevent crash if a Context provider is missing
   if (!authContext || !productContext || !savedContext) {
-     return <div className="text-white p-10">Error: Context not loaded. Try refreshing.</div>;
+     return <div className="text-white p-10">Error: Required data is missing. Please log in again or check your main file structure.</div>;
   }
 
+  // Destructure values now that we know they exist
   const { savedIds } = savedContext;
   const { products, toggleProductStatus } = productContext;
   const { user, profile, logout } = authContext;
 
-  // --- FIX: Filter by the secure seller_id (UUID) OR the old hardcoded name ---
+  // Filter Data
   const savedProducts = products.filter(item => savedIds.includes(item.id));
+  // Filter by the actual seller_id (UUID)
   const myListings = products.filter(item => item.seller_id === user.id); 
 
   const handleLogout = () => {
@@ -53,10 +61,12 @@ const MyListingsScreen = () => {
     <div className="min-h-screen bg-background text-white pb-24 md:pb-10">
       <div className="max-w-5xl mx-auto pt-6 px-4 md:px-8 relative min-h-screen md:min-h-0">
         
+        {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="text-2xl md:text-4xl font-bold">Profile</h1>
-            <p className="text-textMuted mt-1">Hello, {profile?.full_name || user?.email}</p>
+            {/* --- FIX: Displaying Full Name as priority --- */}
+            <p className="text-textMuted mt-1">Hello, {profile?.full_name || "Student User"}</p>
           </div>
           <div className="flex gap-3">
             <button onClick={() => navigate('/create')} className="hidden md:flex items-center bg-primary text-black px-6 py-2 rounded-full font-bold hover:scale-105 transition">
@@ -68,14 +78,15 @@ const MyListingsScreen = () => {
           </div>
         </div>
 
+        {/* Tabs */}
         <div className="flex gap-6 border-b border-surface mb-6">
           <button onClick={() => setActiveTab('listings')} className={`pb-2 text-lg font-bold transition ${activeTab === 'listings' ? 'text-primary border-b-2 border-primary' : 'text-textMuted'}`}>My Listings</button>
           <button onClick={() => setActiveTab('saved')} className={`pb-2 text-lg font-bold transition ${activeTab === 'saved' ? 'text-primary border-b-2 border-primary' : 'text-textMuted'}`}>Saved Items</button>
         </div>
 
+        {/* Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
-            {/* VIEW 1: MY LISTINGS */}
+            {/* MY LISTINGS TAB */}
             {activeTab === 'listings' && (
                 myListings.length > 0 ? (
                     myListings.map((item) => (
@@ -99,7 +110,7 @@ const MyListingsScreen = () => {
                 )
             )}
 
-            {/* VIEW 2: SAVED ITEMS (Filter Logic remains the same) */}
+            {/* SAVED ITEMS TAB */}
             {activeTab === 'saved' && (
               savedProducts.length > 0 ? (
                 savedProducts.map((item) => (
