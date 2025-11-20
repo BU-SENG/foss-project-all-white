@@ -1,32 +1,46 @@
 import React, { useState, useRef } from 'react';
-import { X, Image as ImageIcon, ChevronDown, Plus } from 'lucide-react';
+import { X, Image as ImageIcon, ChevronDown, Plus, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const CreateListingScreen = () => {
   const navigate = useNavigate();
   
-  // State to store the images selected by the user
   const [selectedImages, setSelectedImages] = useState([]);
-  
-  // Reference to the hidden file input element
   const fileInputRef = useRef(null);
 
-  // Trigger the hidden input when the UI box is clicked
+  // Sorted List of Halls
+  const halls = [
+    "Ameyo",
+    "Bethel",
+    "Crystal",
+    "Diamond",
+    "Emerald",
+    "FAD",
+    "Gideon Troopers",
+    "Neal Wilson",
+    "Nelson Mandela",
+    "Nyberg",
+    "Ogden",
+    "Platinum",
+    "Queen Esther",
+    "Samuel Akande",
+    "Sapphire",
+    "Topaz",
+    "Winslow"
+  ];
+
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
 
-  // Handle the file selection
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     if (files.length > 0) {
-      // Create temporary URLs to preview the images
       const newImageUrls = files.map(file => URL.createObjectURL(file));
       setSelectedImages(prev => [...prev, ...newImageUrls]);
     }
   };
 
-  // --- NEW FUNCTION: REMOVE IMAGE ---
   const removeImage = (indexToRemove) => {
     setSelectedImages(prevImages => 
       prevImages.filter((_, index) => index !== indexToRemove)
@@ -65,13 +79,10 @@ const CreateListingScreen = () => {
             />
 
             {selectedImages.length > 0 ? (
-              // STATE A: Images Selected (Show Grid)
               <div className="grid grid-cols-2 gap-2">
                 {selectedImages.map((img, index) => (
                   <div key={index} className="relative h-32 md:h-40 rounded-2xl overflow-hidden border border-surface group">
                     <img src={img} alt="Preview" className="w-full h-full object-cover" />
-                    
-                    {/* --- THE REMOVE BUTTON --- */}
                     <button 
                       onClick={() => removeImage(index)}
                       className="absolute top-1 right-1 bg-black/60 hover:bg-red-600 text-white p-1 rounded-full backdrop-blur-sm transition"
@@ -80,21 +91,12 @@ const CreateListingScreen = () => {
                     </button>
                   </div>
                 ))}
-                
-                {/* Small 'Add More' Button */}
-                <div 
-                  onClick={handleImageClick}
-                  className="h-32 md:h-40 rounded-2xl border-2 border-dashed border-surface flex items-center justify-center cursor-pointer hover:border-primary transition"
-                >
+                <div onClick={handleImageClick} className="h-32 md:h-40 rounded-2xl border-2 border-dashed border-surface flex items-center justify-center cursor-pointer hover:border-primary transition">
                   <Plus className="text-textMuted" />
                 </div>
               </div>
             ) : (
-              // STATE B: No Images (Show Big Upload Box)
-              <div 
-                onClick={handleImageClick} 
-                className="border-2 border-dashed border-surface hover:border-primary rounded-3xl h-64 md:h-96 flex flex-col items-center justify-center cursor-pointer bg-surface/20 transition group"
-              >
+              <div onClick={handleImageClick} className="border-2 border-dashed border-surface hover:border-primary rounded-3xl h-64 md:h-96 flex flex-col items-center justify-center cursor-pointer bg-surface/20 transition group">
                 <div className="bg-surface p-4 rounded-full mb-4 group-hover:scale-110 transition">
                   <ImageIcon size={32} className="text-textMuted group-hover:text-white" />
                 </div>
@@ -104,33 +106,51 @@ const CreateListingScreen = () => {
             )}
           </div>
 
-          {/* Right: Form */}
+          {/* --- FORM SECTION --- */}
           <div className="w-full md:w-2/3 space-y-6">
             <div>
                 <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Title</label>
                 <input type="text" className="w-full bg-surface text-white p-4 rounded-xl border border-transparent focus:border-primary outline-none transition text-lg" placeholder="e.g. Calculus Textbook, barely used" />
             </div>
             
-            <div>
-                <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Price</label>
-                <div className="flex items-center bg-surface rounded-xl border border-transparent focus:border-primary px-4 transition">
-                    <span className="text-textMuted mr-2 text-lg">₦</span>
-                    <input type="number" className="bg-transparent text-white w-full p-4 outline-none text-lg" placeholder="0.00" />
+            <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                    <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Price</label>
+                    <div className="flex items-center bg-surface rounded-xl border border-transparent focus:border-primary px-4 transition">
+                        <span className="text-textMuted mr-2 text-lg">₦</span>
+                        <input type="number" className="bg-transparent text-white w-full p-4 outline-none text-lg" placeholder="0.00" />
+                    </div>
+                </div>
+                <div className="flex-1">
+                    <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Category</label>
+                    <div className="relative">
+                        <select className="w-full bg-surface text-white p-4 rounded-xl border border-transparent focus:border-primary outline-none appearance-none cursor-pointer text-lg">
+                            <option>Select...</option>
+                            <option>Books</option>
+                            <option>Electronics</option>
+                            <option>Furniture</option>
+                            <option>Clothing</option>
+                            <option>Sports</option>
+                            <option>Dorm Essentials</option>
+                            <option>Others</option>
+                        </select>
+                        <ChevronDown className="absolute right-4 top-5 text-textMuted pointer-events-none" size={20} />
+                    </div>
                 </div>
             </div>
 
+            {/* --- NEW HALL/LOCATION SELECTOR --- */}
             <div>
-                <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Category</label>
+                <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Hall / Location</label>
                 <div className="relative">
-                    <select className="w-full bg-surface text-white p-4 rounded-xl border border-transparent focus:border-primary outline-none appearance-none cursor-pointer text-lg">
-                        <option>Select a category...</option>
-                        <option>Books</option>
-                        <option>Electronics</option>
-                        <option>Furniture</option>
-                        <option>Clothing</option>
-                        <option>Sports</option>
-                        <option>Dorm Essentials</option>
-                        <option>Others</option>
+                    <div className="absolute left-4 top-4 text-textMuted pointer-events-none">
+                        <MapPin size={20} />
+                    </div>
+                    <select className="w-full bg-surface text-white p-4 pl-12 rounded-xl border border-transparent focus:border-primary outline-none appearance-none cursor-pointer text-lg">
+                        <option>Select your Hall...</option>
+                        {halls.map((hall, index) => (
+                            <option key={index} value={hall}>{hall}</option>
+                        ))}
                     </select>
                     <ChevronDown className="absolute right-4 top-5 text-textMuted pointer-events-none" size={20} />
                 </div>
@@ -141,7 +161,6 @@ const CreateListingScreen = () => {
                 <textarea className="w-full bg-surface text-white p-4 rounded-xl h-40 border border-transparent focus:border-primary outline-none resize-none transition text-lg" placeholder="Describe your item..." />
             </div>
 
-            {/* Mobile Post Button */}
             <button onClick={handlePost} className="md:hidden w-full bg-primary text-black py-4 rounded-xl font-bold text-lg shadow-lg mt-4">Post Item</button>
           </div>
         </div>

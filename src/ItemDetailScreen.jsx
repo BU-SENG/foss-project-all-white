@@ -7,8 +7,6 @@ import broomImg from './assets/images/broom.jpeg';
 import ironImg from './assets/images/iron.jpeg';
 import plateImg from './assets/images/disposable-plate.jpeg';
 import mopImg from './assets/images/mop.jpeg';
-// We don't need the chemBookImg for the Calculus book anymore, 
-// but we keep the file in the folder for the "My Listings" page.
 
 const ItemDetailScreen = () => {
   const navigate = useNavigate();
@@ -22,11 +20,10 @@ const ItemDetailScreen = () => {
       category: "Books",
       condition: "Used - Good",
       description: "Calculus Early Transcendentals (8th Edition). Used for two semesters but no missing pages. Highlights in chapter 4.",
-      // --- CORRECTED: Using the URL from Home Screen ---
       image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80",
       seller: "Aria Brooks",
       sellerImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-      location: "Science Faculty"
+      location: "Bethel Hall" // Updated
     },
     {
       id: 2,
@@ -38,7 +35,7 @@ const ItemDetailScreen = () => {
       image: "https://images.unsplash.com/photo-1610824352934-c10d87b700cc?auto=format&fit=crop&w=400&q=80",
       seller: "Leo Martinez",
       sellerImage: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80",
-      location: "Male Hostel A"
+      location: "Ameyo Hall" // Updated
     },
     {
       id: 3,
@@ -47,10 +44,10 @@ const ItemDetailScreen = () => {
       category: "Dorm Essentials",
       condition: "New",
       description: "Strong traditional broom. Very effective for sweeping hostel floors. Brand new bundle.",
-      image: broomImg, // Local .jpeg
+      image: broomImg,
       seller: "Sarah Chen",
       sellerImage: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80",
-      location: "Female Hostel C"
+      location: "Neal Wilson" // Updated
     },
     {
       id: 4,
@@ -59,10 +56,10 @@ const ItemDetailScreen = () => {
       category: "Dorm Essentials",
       condition: "Like New",
       description: "Standard mop with wooden handle. Only used once for move-in cleaning.",
-      image: mopImg, // Local .jpeg
+      image: mopImg,
       seller: "Mike Ross",
       sellerImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
-      location: "Main Gate"
+      location: "Samuel Akande Hall" // Updated
     },
     {
       id: 5,
@@ -74,7 +71,7 @@ const ItemDetailScreen = () => {
       image: "https://images.unsplash.com/photo-1632571401005-458e9d244591?auto=format&fit=crop&w=400&q=80",
       seller: "Aria Brooks",
       sellerImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-      location: "Library"
+      location: "Winslow Hall" // Updated
     },
     {
       id: 6,
@@ -86,7 +83,7 @@ const ItemDetailScreen = () => {
       image: "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?auto=format&fit=crop&w=400&q=80",
       seller: "John Doe",
       sellerImage: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=200&q=80",
-      location: "Arts Faculty"
+      location: "Nyberg Hall" // Updated
     },
     {
       id: 7,
@@ -95,10 +92,10 @@ const ItemDetailScreen = () => {
       category: "Dorm Essentials",
       condition: "New",
       description: "Sealed pack of 50 disposable plates. Great for parties or lazy days.",
-      image: plateImg, // Local .jpeg
+      image: plateImg,
       seller: "Sarah Chen",
       sellerImage: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80",
-      location: "Moremi Hall"
+      location: "Queen Esther" // Updated
     },
     {
       id: 8,
@@ -107,10 +104,10 @@ const ItemDetailScreen = () => {
       category: "Electronics",
       condition: "Used - Good",
       description: "Heavy duty pressing iron. Heats up very fast. Selling because I got a steam iron.",
-      image: ironImg, // Local .jpeg
+      image: ironImg,
       seller: "Leo Martinez",
       sellerImage: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80",
-      location: "Jaja Hall"
+      location: "Havilah Hall" // Updated
     }
   ];
 
