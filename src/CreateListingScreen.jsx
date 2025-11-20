@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { X, Image as ImageIcon, ChevronDown, Plus, MapPin, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useProducts } from './ProductContext'; // Import the hook
+import { useProducts } from './ProductContext'; 
 
 const CreateListingScreen = () => {
   const navigate = useNavigate();
-  const { addProduct } = useProducts(); // Get the add function
+  const { addProduct } = useProducts(); 
   
-  // Form State
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
@@ -35,35 +34,65 @@ const CreateListingScreen = () => {
     setSelectedImages(prev => prev.filter((_, i) => i !== index));
   };
 
+  // --- UPDATED VALIDATION LOGIC ---
   const handlePost = () => {
-    // Basic Validation
-    if (!title || !price || !category || !selectedImages.length) {
-      alert("Please fill in all required fields and add at least one image.");
+    // 1. Check Title (Prevents empty or whitespace-only titles)
+    if (!title.trim()) {
+      alert("Please enter a valid Item Title.");
       return;
     }
 
-    // Create the new item object
+    // 2. Check Price
+    if (!price || parseInt(price) <= 0) {
+      alert("Please enter a valid Price.");
+      return;
+    }
+
+    // 3. Check Dropdowns (Category, Condition, Hall)
+    if (!category) {
+      alert("Please select a Category.");
+      return;
+    }
+    if (!condition) {
+      alert("Please select the Condition of the item.");
+      return;
+    }
+    if (!hall) {
+      alert("Please select your Hall / Location.");
+      return;
+    }
+
+    // 4. Check Description
+    if (!description.trim()) {
+      alert("Please enter a Description.");
+      return;
+    }
+
+    // 5. Check Images
+    if (selectedImages.length === 0) {
+      alert("Please upload at least one photo of the item.");
+      return;
+    }
+
+    // If all checks pass, create the item
     const newItem = {
-      id: Date.now(), // Unique ID based on time
-      title,
-      price: `₦${parseInt(price).toLocaleString()}`, // Format price with commas
+      id: Date.now(), 
+      title: title.trim(), // Trim whitespace from start/end
+      price: `₦${parseInt(price).toLocaleString()}`, 
       category,
       condition,
-      description,
-      // Use the first uploaded image as the main display image
+      description: description.trim(),
       image: selectedImages[0], 
       seller: "You", 
-      sellerImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80", // Your profile pic placeholder
+      sellerImage: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80", 
       location: hall,
       status: "Active",
       time: "Just now"
     };
 
-    // Send to Context
     addProduct(newItem);
-
     alert("Success! Your item is live.");
-    navigate('/'); // Go Home
+    navigate('/'); 
   };
 
   return (
@@ -104,7 +133,13 @@ const CreateListingScreen = () => {
           <div className="w-full md:w-2/3 space-y-6">
             <div>
                 <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Title</label>
-                <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full bg-surface text-white p-4 rounded-xl border border-transparent focus:border-primary outline-none transition text-lg" placeholder="e.g. Calculus Textbook" />
+                <input 
+                  type="text" 
+                  value={title} 
+                  onChange={e => setTitle(e.target.value)} 
+                  className="w-full bg-surface text-white p-4 rounded-xl border border-transparent focus:border-primary outline-none transition text-lg" 
+                  placeholder="e.g. Calculus Textbook" 
+                />
             </div>
             
             <div className="flex flex-col md:flex-row gap-4">
