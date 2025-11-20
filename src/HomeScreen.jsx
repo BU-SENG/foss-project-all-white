@@ -3,6 +3,7 @@ import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 // --- IMPORTING LOCAL IMAGES ---
+// Ensure these match your file names exactly (.jpeg or .jpg)
 import broomImg from './assets/images/broom.jpeg';
 import ironImg from './assets/images/iron.jpeg';
 import plateImg from './assets/images/disposable-plate.jpeg';
@@ -131,7 +132,12 @@ const HomeScreen = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((item) => (
-              <div key={item.id} onClick={() => navigate('/item/1')} className="cursor-pointer group bg-surface p-3 rounded-2xl hover:bg-secondary transition duration-300">
+              <div 
+                key={item.id} 
+                // --- THIS IS THE KEY CHANGE: Dynamic Navigation ---
+                onClick={() => navigate(`/item/${item.id}`)} 
+                className="cursor-pointer group bg-surface p-3 rounded-2xl hover:bg-secondary transition duration-300"
+              >
                 <div className="w-full h-40 md:h-56 rounded-xl mb-3 bg-gray-700 overflow-hidden relative">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
                   <div className="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded-md backdrop-blur-sm">
@@ -146,7 +152,6 @@ const HomeScreen = () => {
               </div>
             ))
           ) : (
-            // --- CHANGED THIS MESSAGE ---
             <div className="col-span-full py-12 text-center text-textMuted">
               <p className="text-lg">No items found</p>
             </div>

@@ -3,8 +3,8 @@ import { Search, MoreVertical, Plus, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 // --- IMPORTING LOCAL IMAGE ---
-// Make sure the file name matches exactly! (chemistry-textbook.jpeg or .jpg)
-import chemBookImg from './assets/images/chemistry-textbook.jpeg';
+// CORRECTED: Changed .jpeg to .jpg
+import chemBookImg from './assets/images/chemistry-textbook.jpg';
 
 const MyListingsScreen = () => {
   const navigate = useNavigate();
