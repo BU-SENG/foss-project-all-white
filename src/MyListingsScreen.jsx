@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, MoreVertical, Plus, Tag, Heart } from 'lucide-react';
+import { Search, MoreVertical, Plus, Heart, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import chemBookImg from './assets/images/chemistry-textbook.jpg';
 import { products } from './data'; 
@@ -12,24 +12,35 @@ const MyListingsScreen = () => {
 
   const savedProducts = products.filter(item => savedIds.includes(item.id));
 
-  const myListings = [
+  // We use State here so you can see the change happening in real-time
+  const [myListings, setMyListings] = useState([
     { 
       id: 101, 
       title: 'Nike Air Max 270', 
       price: '₦75,000', 
-      status: 'Active', 
-      color: 'bg-green-900/30 text-primary border-green-500/30', 
+      status: 'Active', // Initial Status
       image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80' 
     },
     { 
       id: 102, 
       title: 'Chemistry Textbook', 
       price: '₦15,000', 
-      status: 'Sold', 
-      color: 'bg-gray-700/30 text-gray-400 border-gray-600/30', 
+      status: 'Sold', // Initial Status
       image: chemBookImg 
     },
-  ];
+  ]);
+
+  // Function to toggle status
+  const toggleStatus = (id) => {
+    setMyListings(currentItems => 
+      currentItems.map(item => {
+        if (item.id === id) {
+          return { ...item, status: item.status === 'Active' ? 'Sold' : 'Active' };
+        }
+        return item;
+      })
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background text-white pb-24 md:pb-10">
@@ -42,7 +53,6 @@ const MyListingsScreen = () => {
           </button>
         </div>
 
-        {/* --- TABS --- */}
         <div className="flex gap-6 border-b border-surface mb-6">
           <button 
             onClick={() => setActiveTab('listings')}
@@ -58,31 +68,39 @@ const MyListingsScreen = () => {
           </button>
         </div>
 
-        {/* --- CONTENT --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             
             {/* VIEW 1: MY LISTINGS */}
             {activeTab === 'listings' && myListings.map((item) => (
                 <div 
                   key={item.id} 
-                  // --- ADDED CLICK HANDLER HERE ---
                   onClick={() => navigate(`/item/${item.id}`)}
                   className="bg-surface p-4 rounded-2xl flex items-center hover:bg-secondary transition cursor-pointer group border border-transparent hover:border-surface/50"
                 >
-                    <img src={item.image} className="w-24 h-24 rounded-xl object-cover" alt={item.title} />
+                    <img src={item.image} className="w-24 h-24 rounded-xl object-cover opacity-90" alt={item.title} />
                     <div className="flex-1 ml-4">
                         <div className="flex justify-between items-start">
                             <h3 className="text-white font-bold text-lg group-hover:text-primary transition">{item.title}</h3>
-                            {/* Clicking the menu dots shouldn't trigger navigation, so we stop propagation */}
                             <button onClick={(e) => e.stopPropagation()} className="p-1 hover:bg-white/10 rounded-full">
                               <MoreVertical className="text-textMuted" size={20} />
                             </button>
                         </div>
                         <p className="text-white font-bold text-xl mt-1">{item.price}</p>
-                        <div className={`inline-flex items-center px-3 py-1 rounded-full mt-2 border ${item.color}`}>
-                            <Tag size={12} className="mr-2" />
-                            <span className="text-xs font-bold uppercase tracking-wide">{item.status}</span>
-                        </div>
+                        
+                        {/* --- STATUS TOGGLE BUTTON --- */}
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent opening detail page
+                            toggleStatus(item.id);
+                          }}
+                          className={`inline-flex items-center px-3 py-1 rounded-full mt-2 border text-xs font-bold uppercase tracking-wide transition hover:scale-105 ${
+                            item.status === 'Active' 
+                              ? 'bg-green-900/30 text-primary border-green-500/30' 
+                              : 'bg-gray-700/30 text-gray-400 border-gray-600/30'
+                          }`}
+                        >
+                            {item.status} <ChevronDown size={12} className="ml-1" />
+                        </button>
                     </div>
                 </div>
             ))}

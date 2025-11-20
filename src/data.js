@@ -2,17 +2,16 @@ import broomImg from './assets/images/broom.jpeg';
 import ironImg from './assets/images/iron.jpeg';
 import plateImg from './assets/images/disposable-plate.jpeg';
 import mopImg from './assets/images/mop.jpeg';
-// Removed the unused chemistry book import to fix the error
 
 export const products = [
   {
     id: 1,
     title: "Calculus Textbook",
     price: "₦5,000",
+    status: "Active", // --- NEW FIELD ---
     category: "Books",
     condition: "Used - Good",
     description: "Calculus Early Transcendentals (8th Edition). Used for two semesters but no missing pages.",
-    // Keeping the Unsplash URL for Calculus (since we don't have a local calculus image)
     image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80",
     seller: "Aria Brooks",
     sellerImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
@@ -23,6 +22,7 @@ export const products = [
     id: 2,
     title: "Reusable Plastic Cup",
     price: "₦500",
+    status: "Active", // --- NEW FIELD ---
     category: "Dorm Essentials",
     condition: "New",
     description: "Hard plastic cup, never used. Got it as a gift but I have too many.",
@@ -36,6 +36,7 @@ export const products = [
     id: 3,
     title: "Local Broom (Igbale)",
     price: "₦800",
+    status: "Active",
     category: "Dorm Essentials",
     condition: "New",
     description: "Strong traditional broom. Very effective for sweeping hostel floors.",
@@ -49,6 +50,7 @@ export const products = [
     id: 4,
     title: "Cleaning Mop",
     price: "₦2,500",
+    status: "Active",
     category: "Dorm Essentials",
     condition: "Like New",
     description: "Standard mop with wooden handle. Only used once for move-in cleaning.",
@@ -62,6 +64,7 @@ export const products = [
     id: 5,
     title: "Physics Textbook",
     price: "₦4,500",
+    status: "Active",
     category: "Books",
     condition: "Used - Fair",
     description: "Fundamentals of Physics. Cover is slightly worn but inside is clean.",
@@ -75,6 +78,7 @@ export const products = [
     id: 6,
     title: "60 Leaves Exercise Book",
     price: "₦300",
+    status: "Active",
     category: "Books",
     condition: "New",
     description: "Unused exercise book. I have 5 pieces available if you need more.",
@@ -88,6 +92,7 @@ export const products = [
     id: 7,
     title: "Disposable Plates (Pack)",
     price: "₦1,500",
+    status: "Active",
     category: "Dorm Essentials",
     condition: "New",
     description: "Sealed pack of 50 disposable plates. Great for parties or lazy days.",
@@ -101,6 +106,7 @@ export const products = [
     id: 8,
     title: "Electric Iron",
     price: "₦8,000",
+    status: "Active",
     category: "Electronics",
     condition: "Used - Good",
     description: "Heavy duty pressing iron. Heats up very fast.",

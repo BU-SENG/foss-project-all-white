@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { products } from './data'; // Import shared data
+import { products } from './data'; // Using the centralized data
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -19,6 +19,7 @@ const HomeScreen = () => {
   return (
     <div className="min-h-screen bg-background text-white pb-24 font-sans">
       <div className="max-w-7xl mx-auto pt-6 px-4 md:px-8">
+        
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl md:text-4xl font-bold">Campus Marketplace</h1>
         </div>
@@ -51,11 +52,19 @@ const HomeScreen = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((item) => (
-              <div key={item.id} onClick={() => navigate(`/item/${item.id}`)} className="cursor-pointer group bg-surface p-3 rounded-2xl hover:bg-secondary transition duration-300">
+              <div 
+                key={item.id} 
+                onClick={() => navigate(`/item/${item.id}`)} 
+                className={`cursor-pointer group bg-surface p-3 rounded-2xl hover:bg-secondary transition duration-300 ${item.status === 'Sold' ? 'opacity-70' : ''}`}
+              >
                 <div className="w-full h-40 md:h-56 rounded-xl mb-3 bg-gray-700 overflow-hidden relative">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
-                  <div className="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded-md backdrop-blur-sm">
-                      <p className="text-primary text-xs font-bold">Active</p>
+                  
+                  {/* --- DYNAMIC STATUS BADGE --- */}
+                  <div className={`absolute top-2 right-2 px-2 py-1 rounded-md backdrop-blur-sm ${
+                    item.status === 'Active' ? 'bg-black/60 text-primary' : 'bg-gray-800/90 text-gray-400'
+                  }`}>
+                      <p className="text-xs font-bold">{item.status}</p>
                   </div>
                 </div>
                 <h3 className="text-white font-semibold text-lg leading-tight mb-1 group-hover:text-primary transition truncate">{item.title}</h3>
