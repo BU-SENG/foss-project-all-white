@@ -9,8 +9,8 @@ const Navbar = () => {
 
   const tabs = [
     { name: 'Home', icon: Home, path: '/' },
-    // Post is now treated as a regular tab in the list, but highlighted
-    { name: 'Post', icon: PlusCircle, path: '/create', highlight: true },
+    // Removed 'highlight: true' so it behaves like a normal button now
+    { name: 'Post', icon: PlusCircle, path: '/create' }, 
     { name: 'Chat', icon: MessageSquare, path: '/chat' },
     { name: 'Profile', icon: User, path: '/profile' },
   ];
@@ -33,12 +33,10 @@ const Navbar = () => {
                         activeTab === tab.path ? 'text-primary' : 'text-textMuted'
                     }`}
                 >
-                    {/* On desktop, Post looks like a normal link but we can color it green if active */}
                     <tab.icon size={20} />
                     <span>{tab.name}</span>
                 </button>
             ))}
-            {/* REMOVED THE SEPARATE GREEN BUTTON FROM HERE */}
         </div>
       </div>
 
@@ -51,24 +49,16 @@ const Navbar = () => {
               onClick={() => navigate(tab.path)}
               className="flex flex-col items-center justify-center w-12"
             >
-              {tab.highlight ? (
-                // The Floating Plus Button
-                <div className="bg-primary p-3 rounded-full -mt-10 shadow-lg border-4 border-background flex flex-col items-center justify-center">
-                  <tab.icon size={24} color="#000" />
-                  {/* Caption added inside the circle for the floating button */}
-                  <span className="text-[10px] font-bold text-black mt-0.5">{tab.name}</span>
-                </div>
-              ) : (
-                <>
-                  <tab.icon 
-                    size={24} 
-                    color={activeTab === tab.path ? '#00E359' : '#8E9B93'} 
-                  />
-                  <span className={`text-[10px] mt-1 ${activeTab === tab.path ? 'text-primary' : 'text-textMuted'}`}>
-                    {tab.name}
-                  </span>
-                </>
-              )}
+              {/* We removed the conditional check here. 
+                 Now EVERY button renders exactly the same way.
+              */}
+              <tab.icon 
+                size={24} 
+                color={activeTab === tab.path ? '#00E359' : '#8E9B93'} 
+              />
+              <span className={`text-[10px] mt-1 ${activeTab === tab.path ? 'text-primary' : 'text-textMuted'}`}>
+                {tab.name}
+              </span>
             </button>
           ))}
         </div>

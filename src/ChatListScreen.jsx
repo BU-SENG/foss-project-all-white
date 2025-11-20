@@ -1,14 +1,39 @@
 import React from 'react';
 import { Search } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const ChatListScreen = () => {
-  const navigate = useNavigate(); // Initialize hook
+  const navigate = useNavigate();
 
+  // Updated Chat Data with specific Student Images
   const chats = [
-    { id: 1, name: 'Aria Brooks', msg: 'Hey, is the textbook still available? I can meet tomorrow.', time: '10:30 AM', unread: 2 },
-    { id: 2, name: 'Leo Martinez', msg: 'Perfect! I can meet you at the library entrance.', time: '9:45 AM', unread: 0 },
-    { id: 3, name: 'Sarah Chen', msg: 'Is the price negotiable?', time: 'Yesterday', unread: 0 },
+    { 
+      id: 1, 
+      name: 'Aria Brooks', 
+      msg: 'Hey, is the textbook still available?', 
+      time: '10:30 AM', 
+      unread: 2,
+      // Female Student Image
+      image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80' 
+    },
+    { 
+      id: 2, 
+      name: 'Leo Martinez', 
+      msg: 'Perfect! I can meet you at the library.', 
+      time: '9:45 AM', 
+      unread: 0,
+      // Male Student Image
+      image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80'
+    },
+    { 
+      id: 3, 
+      name: 'Sarah Chen', 
+      msg: 'Is the price negotiable?', 
+      time: 'Yesterday', 
+      unread: 0,
+      // Female Student Image 2
+      image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80'
+    },
   ];
   
   return (
@@ -25,10 +50,10 @@ const ChatListScreen = () => {
           {chats.map((chat) => (
             <div 
               key={chat.id} 
-              onClick={() => navigate(`/chat/${chat.id}`)} // Navigate to specific chat on click
+              onClick={() => navigate(`/chat/${chat.id}`)} 
               className="flex items-center cursor-pointer hover:bg-surface p-4 rounded-2xl transition group border border-transparent hover:border-surface/50"
             >
-              <img src={`https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80`} className="w-14 h-14 rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition" />
+              <img src={chat.image} className="w-14 h-14 rounded-full object-cover ring-2 ring-transparent group-hover:ring-primary transition" />
               <div className="flex-1 ml-4">
                 <div className="flex justify-between mb-1">
                   <h4 className="font-bold text-lg group-hover:text-primary transition">{chat.name}</h4>

@@ -2,11 +2,30 @@ import React from 'react';
 import { Search, MoreVertical, Plus, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+// --- IMPORTING LOCAL IMAGE ---
+// Make sure the file name matches exactly! (chemistry-textbook.jpeg or .jpg)
+import chemBookImg from './assets/images/chemistry-textbook.jpeg';
+
 const MyListingsScreen = () => {
   const navigate = useNavigate();
+
   const listings = [
-    { id: 1, title: 'Nike Air Max 270', price: '$75.00', status: 'Active', color: 'bg-green-900/30 text-primary border-green-500/30' },
-    { id: 2, title: 'Chemistry Textbook', price: '$40.00', status: 'Sold', color: 'bg-gray-700/30 text-gray-400 border-gray-600/30' },
+    { 
+      id: 1, 
+      title: 'Nike Air Max 270', 
+      price: '₦75,000', 
+      status: 'Active', 
+      color: 'bg-green-900/30 text-primary border-green-500/30',
+      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80'
+    },
+    { 
+      id: 2, 
+      title: 'Chemistry Textbook', 
+      price: '₦15,000', 
+      status: 'Sold', 
+      color: 'bg-gray-700/30 text-gray-400 border-gray-600/30',
+      image: chemBookImg // Using the local image variable here
+    },
   ];
 
   return (
@@ -37,7 +56,7 @@ const MyListingsScreen = () => {
             {/* Listing Items */}
             {listings.map((item) => (
                 <div key={item.id} className="bg-surface p-4 rounded-2xl flex items-center hover:bg-secondary transition cursor-pointer group border border-transparent hover:border-surface/50">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80" className="w-24 h-24 rounded-xl object-cover" />
+                    <img src={item.image} className="w-24 h-24 rounded-xl object-cover" alt={item.title} />
                     <div className="flex-1 ml-4">
                         <div className="flex justify-between items-start">
                             <h3 className="text-white font-bold text-lg group-hover:text-primary transition">{item.title}</h3>

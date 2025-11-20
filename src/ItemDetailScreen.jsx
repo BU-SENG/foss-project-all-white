@@ -2,9 +2,6 @@ import React from 'react';
 import { ArrowLeft, Share, Heart, Star, MessageCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-// Assuming you might want to use local images here eventually, 
-// but for now we keep the placeholders for the detail view or you can pass the image via router state later.
-
 const ItemDetailScreen = () => {
   const navigate = useNavigate();
   return (
@@ -50,8 +47,9 @@ const ItemDetailScreen = () => {
                     Selling my Forsa desk lamp from IKEA. It's in great condition, just a few minor scuffs that are barely noticeable. Provides excellent directed light for reading or studying. Original bulb included.
                 </p>
 
+                {/* Seller Card with Updated Image */}
                 <div className="bg-surface p-4 rounded-2xl mb-8 flex items-center border border-gray-800">
-                    <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80" className="w-14 h-14 rounded-full object-cover" />
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80" className="w-14 h-14 rounded-full object-cover" />
                     <div className="ml-4 flex-1">
                         <h4 className="text-white font-bold text-lg">Alex Johnson</h4>
                         <p className="text-textMuted text-sm">State University • Class of '25</p>
@@ -67,7 +65,7 @@ const ItemDetailScreen = () => {
 
                 <div className="flex gap-4 md:static fixed bottom-0 left-0 right-0 bg-background md:bg-transparent border-t md:border-t-0 border-surface p-4 md:p-0 z-50">
                     <button 
-                        onClick={() => navigate('/chat/1')} // Connects to Chat Screen
+                        onClick={() => navigate('/chat/new')} 
                         className="flex-1 border-2 border-primary py-4 rounded-xl text-primary font-bold hover:bg-primary/10 transition flex justify-center items-center gap-2"
                     >
                         <MessageCircle size={20} /> Chat with Seller

@@ -26,6 +26,13 @@ const CreateListingScreen = () => {
     }
   };
 
+  // --- NEW FUNCTION: REMOVE IMAGE ---
+  const removeImage = (indexToRemove) => {
+    setSelectedImages(prevImages => 
+      prevImages.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
   const handlePost = () => {
     alert("Success! Your item has been posted to Campus Marketplace.");
     navigate('/');
@@ -48,7 +55,6 @@ const CreateListingScreen = () => {
           
           {/* --- IMAGE UPLOAD SECTION --- */}
           <div className="w-full md:w-1/3">
-            {/* 1. The Hidden Input (The engine that opens the explorer) */}
             <input 
               type="file" 
               ref={fileInputRef} 
@@ -58,15 +64,23 @@ const CreateListingScreen = () => {
               accept="image/*" 
             />
 
-            {/* 2. The UI Logic: Show Preview OR Show Upload Box */}
             {selectedImages.length > 0 ? (
               // STATE A: Images Selected (Show Grid)
               <div className="grid grid-cols-2 gap-2">
                 {selectedImages.map((img, index) => (
-                  <div key={index} className="relative h-32 md:h-40 rounded-2xl overflow-hidden border border-surface">
+                  <div key={index} className="relative h-32 md:h-40 rounded-2xl overflow-hidden border border-surface group">
                     <img src={img} alt="Preview" className="w-full h-full object-cover" />
+                    
+                    {/* --- THE REMOVE BUTTON --- */}
+                    <button 
+                      onClick={() => removeImage(index)}
+                      className="absolute top-1 right-1 bg-black/60 hover:bg-red-600 text-white p-1 rounded-full backdrop-blur-sm transition"
+                    >
+                      <X size={14} />
+                    </button>
                   </div>
                 ))}
+                
                 {/* Small 'Add More' Button */}
                 <div 
                   onClick={handleImageClick}
@@ -78,7 +92,7 @@ const CreateListingScreen = () => {
             ) : (
               // STATE B: No Images (Show Big Upload Box)
               <div 
-                onClick={handleImageClick} // Clicking this triggers the hidden input
+                onClick={handleImageClick} 
                 className="border-2 border-dashed border-surface hover:border-primary rounded-3xl h-64 md:h-96 flex flex-col items-center justify-center cursor-pointer bg-surface/20 transition group"
               >
                 <div className="bg-surface p-4 rounded-full mb-4 group-hover:scale-110 transition">

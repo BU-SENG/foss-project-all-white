@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Send, MoreVertical, Phone } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ChatScreen = () => {
   const navigate = useNavigate();
+  const { id } = useParams(); // Get the ID from the URL (e.g., "1" or "2")
   const [message, setMessage] = useState('');
+
+  // This simulates a database of users
+  const users = {
+    1: { name: 'Aria Brooks', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80' },
+    2: { name: 'Leo Martinez', image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80' },
+    3: { name: 'Sarah Chen', image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&q=80' },
+    'new': { name: 'Alex Johnson', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80' } // Default for "Chat with Seller"
+  };
+
+  // Select the user based on ID, or fallback to Alex if not found
+  const currentUser = users[id] || users['new'];
   
-  // Mock messages data
   const [messages, setMessages] = useState([
-    { id: 1, text: "Hi, is the Calculus textbook still available?", sender: 'me', time: '10:30 AM' },
-    { id: 2, text: "Yes, it is! Are you on campus?", sender: 'them', time: '10:32 AM' },
-    { id: 3, text: "Yeah, I'm at the Student Centre. Can we meet?", sender: 'me', time: '10:33 AM' },
+    { id: 1, text: "Hi, is the item still available?", sender: 'me', time: '10:30 AM' },
+    { id: 2, text: "Yes it is! Are you on campus?", sender: 'them', time: '10:32 AM' },
   ]);
 
   const handleSend = () => {
     if (!message.trim()) return;
-    // Add new message to list (Simulation)
     setMessages([...messages, { id: Date.now(), text: message, sender: 'me', time: 'Now' }]);
     setMessage('');
   };
@@ -29,9 +38,10 @@ const ChatScreen = () => {
             <ArrowLeft size={24} />
           </button>
           <div className="flex items-center gap-3">
-            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" className="w-10 h-10 rounded-full object-cover" />
+            {/* DYNAMIC IMAGE AND NAME */}
+            <img src={currentUser.image} className="w-10 h-10 rounded-full object-cover" />
             <div>
-              <h3 className="font-bold text-sm md:text-base">Aria Brooks</h3>
+              <h3 className="font-bold text-sm md:text-base">{currentUser.name}</h3>
               <p className="text-primary text-xs">Online</p>
             </div>
           </div>
