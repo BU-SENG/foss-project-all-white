@@ -10,11 +10,7 @@ import mopImg from './assets/images/mop.jpeg';
 
 const HomeScreen = () => {
   const navigate = useNavigate();
-  
-  // State for Category Filtering
   const [selectedCategory, setSelectedCategory] = useState('All');
-  
-  // State for Search Functionality
   const [searchQuery, setSearchQuery] = useState('');
 
   const products = [
@@ -84,15 +80,9 @@ const HomeScreen = () => {
     }
   ];
 
-  // --- THE COMBINED FILTER LOGIC ---
   const filteredProducts = products.filter(product => {
-    // 1. Check Category
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-    
-    // 2. Check Search Text (Case Insensitive)
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
-
-    // Return items that match BOTH
     return matchesCategory && matchesSearch;
   });
 
@@ -104,13 +94,10 @@ const HomeScreen = () => {
         
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl md:text-4xl font-bold">Campus Marketplace</h1>
-          <button onClick={() => navigate('/create')} className="md:hidden bg-primary hover:bg-green-400 px-4 py-2 rounded-full font-bold text-black text-sm transition">
-            + Post Item
-          </button>
+          {/* REMOVED THE GREEN POST ITEM BUTTON FROM HERE */}
         </div>
 
         <div className="mb-8">
-          {/* Search Bar */}
           <div className="bg-surface flex items-center px-4 py-3 rounded-lg mb-4 w-full md:max-w-2xl border border-transparent focus-within:border-primary transition">
             <Search className="text-textMuted" size={20} />
             <input 
@@ -118,18 +105,17 @@ const HomeScreen = () => {
               placeholder="Search for textbooks, furniture..." 
               className="ml-3 flex-1 bg-transparent border-none outline-none text-white placeholder-textMuted"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)} // Updates state when you type
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           
-          {/* Categories Buttons */}
           <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
             {categories.map((cat, i) => (
               <button 
                 key={i} 
                 onClick={() => {
                   setSelectedCategory(cat);
-                  setSearchQuery(''); // Optional: Clear search when switching categories
+                  setSearchQuery('');
                 }} 
                 className={`px-6 py-2 rounded-full text-sm whitespace-nowrap transition hover:bg-opacity-80 ${
                   selectedCategory === cat 
@@ -143,7 +129,6 @@ const HomeScreen = () => {
           </div>
         </div>
 
-        {/* Displaying Filtered Results */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((item) => (
@@ -162,7 +147,6 @@ const HomeScreen = () => {
               </div>
             ))
           ) : (
-            // Fallback if no items match
             <div className="col-span-full py-12 text-center text-textMuted">
               <p className="text-lg">No items found matching "{searchQuery}"</p>
             </div>
