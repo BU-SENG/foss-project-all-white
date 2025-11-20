@@ -2,21 +2,33 @@ import React, { useState } from 'react';
 import { Search, MoreVertical, Plus, Tag, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import chemBookImg from './assets/images/chemistry-textbook.jpg';
-import { products } from './data'; // Import shared data
-import { useSavedItems } from './SavedContext'; // Import saved logic
+import { products } from './data'; 
+import { useSavedItems } from './SavedContext'; 
 
 const MyListingsScreen = () => {
   const navigate = useNavigate();
-  const { savedIds } = useSavedItems(); // Get list of saved IDs
-  const [activeTab, setActiveTab] = useState('listings'); // 'listings' or 'saved'
+  const { savedIds } = useSavedItems(); 
+  const [activeTab, setActiveTab] = useState('listings'); 
 
-  // Filter products to find the ones that are saved
   const savedProducts = products.filter(item => savedIds.includes(item.id));
 
-  // Hardcoded "My Listings" (Items I am selling)
   const myListings = [
-    { id: 101, title: 'Nike Air Max 270', price: '₦75,000', status: 'Active', color: 'bg-green-900/30 text-primary border-green-500/30', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80' },
-    { id: 102, title: 'Chemistry Textbook', price: '₦15,000', status: 'Sold', color: 'bg-gray-700/30 text-gray-400 border-gray-600/30', image: chemBookImg },
+    { 
+      id: 101, 
+      title: 'Nike Air Max 270', 
+      price: '₦75,000', 
+      status: 'Active', 
+      color: 'bg-green-900/30 text-primary border-green-500/30', 
+      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80' 
+    },
+    { 
+      id: 102, 
+      title: 'Chemistry Textbook', 
+      price: '₦15,000', 
+      status: 'Sold', 
+      color: 'bg-gray-700/30 text-gray-400 border-gray-600/30', 
+      image: chemBookImg 
+    },
   ];
 
   return (
@@ -51,12 +63,20 @@ const MyListingsScreen = () => {
             
             {/* VIEW 1: MY LISTINGS */}
             {activeTab === 'listings' && myListings.map((item) => (
-                <div key={item.id} className="bg-surface p-4 rounded-2xl flex items-center hover:bg-secondary transition cursor-pointer group border border-transparent hover:border-surface/50">
+                <div 
+                  key={item.id} 
+                  // --- ADDED CLICK HANDLER HERE ---
+                  onClick={() => navigate(`/item/${item.id}`)}
+                  className="bg-surface p-4 rounded-2xl flex items-center hover:bg-secondary transition cursor-pointer group border border-transparent hover:border-surface/50"
+                >
                     <img src={item.image} className="w-24 h-24 rounded-xl object-cover" alt={item.title} />
                     <div className="flex-1 ml-4">
                         <div className="flex justify-between items-start">
                             <h3 className="text-white font-bold text-lg group-hover:text-primary transition">{item.title}</h3>
-                            <button className="p-1 hover:bg-white/10 rounded-full"><MoreVertical className="text-textMuted" size={20} /></button>
+                            {/* Clicking the menu dots shouldn't trigger navigation, so we stop propagation */}
+                            <button onClick={(e) => e.stopPropagation()} className="p-1 hover:bg-white/10 rounded-full">
+                              <MoreVertical className="text-textMuted" size={20} />
+                            </button>
                         </div>
                         <p className="text-white font-bold text-xl mt-1">{item.price}</p>
                         <div className={`inline-flex items-center px-3 py-1 rounded-full mt-2 border ${item.color}`}>
