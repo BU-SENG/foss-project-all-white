@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useProducts } from './ProductContext'; // using Global State
+import { useProducts } from './ProductContext'; // Data source
 
 const HomeScreen = () => {
   const navigate = useNavigate();
-  const { products } = useProducts(); // Get all products from the "Cloud"
+  const { products } = useProducts(); // Get all products from Context
   
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,10 +16,10 @@ const HomeScreen = () => {
     // 1. Check Category
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
     
-    // 2. Check Search Text (Case Insensitive)
+    // 2. Check Search Text
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
 
-    // 3. Check Status (Active vs Sold) - Allows hiding Sold items
+    // 3. Check Status
     const matchesStatus = selectedStatus === 'All' || product.status === selectedStatus;
 
     return matchesCategory && matchesSearch && matchesStatus;
@@ -89,7 +89,7 @@ const HomeScreen = () => {
 
         {/* Product Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {filteredProducts.length > 0 ? (
+          {products.length > 0 ? (
             filteredProducts.map((item) => (
               <div 
                 key={item.id} 
@@ -97,7 +97,8 @@ const HomeScreen = () => {
                 className={`cursor-pointer group bg-surface p-3 rounded-2xl hover:bg-secondary transition duration-300 ${item.status === 'Sold' ? 'opacity-70' : ''}`}
               >
                 <div className="w-full h-40 md:h-56 rounded-xl mb-3 bg-gray-700 overflow-hidden relative">
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                  {/* Item images are now dynamic from the database URL */}
+                  <img src={item.image_url} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
                   
                   {/* Status Badge */}
                   <div className={`absolute top-2 right-2 px-2 py-1 rounded-md backdrop-blur-sm ${

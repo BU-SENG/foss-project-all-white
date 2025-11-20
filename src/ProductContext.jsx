@@ -1,24 +1,67 @@
-import React, { createContext, useState, useContext } from 'react';
-import { products as initialData } from './data'; // Import your starting data
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import { supabase } from './supabaseClient'; 
 
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
-  // This state holds ALL items (Active + Sold + Newly Added)
-  const [products, setProducts] = useState(initialData);
+  const [products, setProducts] = useState([]); 
 
-  // Function to add a new item
-  const addProduct = (newItem) => {
-    setProducts((prevProducts) => [newItem, ...prevProducts]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data, error } = await supabase
+        .from('listings')
+        .select('*, seller_id, seller_name, image_url, price, title, status, category, condition, hall, description, created_at') // Select specific columns
+        .order('created_at', { ascending: false });
+        
+      if (error) {
+        console.error('Error fetching listings:', error.message);
+      }
+      if (data) {
+        const typedData = data.map(item => ({...item, id: Number(item.id)}));
+        setProducts(typedData);
+      }
+    };
+
+    fetchProducts();
+
+    const productListener = supabase
+      .channel('public:listings')
+      .on(
+        'postgres_changes', 
+        { event: '*', schema: 'public', table: 'listings' },
+        // --- FIX HERE: Removed the unused 'payload' argument ---
+        () => { 
+          fetchProducts(); 
+        }
+      )
+      .subscribe();
+    
+    return () => {
+      supabase.removeChannel(productListener);
+    };
+  }, []);
+
+  const addProduct = async (newItem) => {
+    const itemToInsert = {...newItem, id: undefined, image: undefined }; 
+    
+    const { data, error } = await supabase
+      .from('listings')
+      .insert(itemToInsert)
+      .select(); 
+      
+    if (error) throw error;
+    return data;
   };
 
-  // Function to update item status (Active/Sold)
-  const toggleProductStatus = (id) => {
-    setProducts((prev) => prev.map(item => 
-      item.id === id 
-        ? { ...item, status: item.status === 'Active' ? 'Sold' : 'Active' } 
-        : item
-    ));
+  const toggleProductStatus = async (id, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Sold' : 'Active';
+    
+    const { error } = await supabase
+      .from('listings')
+      .update({ status: newStatus })
+      .eq('id', id);
+
+    if (error) throw error;
   };
 
   return (

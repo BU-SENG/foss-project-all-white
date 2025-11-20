@@ -10,14 +10,24 @@ const SignupScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (name && email && password) {
-      signup(name, email, password);
-      navigate('/'); // Go to Home after signup
-    } else {
-      alert("Please fill in all fields");
+    if (!name || !email || !password) {
+        alert("Please fill in all fields.");
+        return;
+    }
+    
+    setLoading(true);
+    try {
+        await signup(name, email, password); // API call
+        alert("Signup successful! You are now logged in.");
+        navigate('/'); // Redirect on success
+    } catch (error) {
+        alert("Signup failed: " + error.message);
+    } finally {
+        setLoading(false);
     }
   };
 
@@ -64,8 +74,8 @@ const SignupScreen = () => {
             />
           </div>
 
-          <button type="submit" className="w-full bg-primary text-black font-bold py-4 rounded-xl hover:bg-green-400 transition mt-4">
-            Sign Up
+          <button type="submit" disabled={loading} className="w-full bg-primary text-black font-bold py-4 rounded-xl hover:bg-green-400 transition mt-4 disabled:bg-gray-600 disabled:text-gray-400">
+            {loading ? 'Creating Account...' : 'Sign Up'}
           </button>
         </form>
 
