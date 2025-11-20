@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { X, Image as ImageIcon, ChevronDown, Plus, MapPin } from 'lucide-react';
+import { X, Image as ImageIcon, ChevronDown, Plus, MapPin, Tag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const CreateListingScreen = () => {
@@ -8,28 +8,19 @@ const CreateListingScreen = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const fileInputRef = useRef(null);
 
-  // Updated Sorted List of Halls
   const halls = [
-    "Ameyo",
-    "Bethel",
-    "Crystal",
-    "Diamond",
-    "Emerald",
-    "FAD",
-    "Gideon Troopers",
-    "Havilah",       // Added
-    "Neal Wilson",
-    "Nelson Mandela",
-    "Nyberg",
-    "Off-Campus",    // Added
-    "Ogden",
-    "Platinum",
-    "Queen Esther",
-    "Samuel Akande",
-    "Sapphire",
-    "Topaz",
-    "Welch",         // Added
-    "Winslow"
+    "Ameyo", "Bethel", "Crystal", "Diamond", "Emerald", "FAD", "Gideon Troopers",
+    "Havilah", "Neal Wilson", "Nelson Mandela", "Nyberg", "Off-Campus",
+    "Ogden", "Platinum", "Queen Esther", "Samuel Akande", "Sapphire", "Topaz",
+    "Welch", "Winslow"
+  ];
+
+  const conditions = [
+    "New",
+    "Used - Like New",
+    "Used - Good",
+    "Used - Fair",
+    "Defective / For Parts"
   ];
 
   const handleImageClick = () => {
@@ -59,7 +50,6 @@ const CreateListingScreen = () => {
     <div className="min-h-screen bg-background text-white pb-24 md:pb-10">
       <div className="max-w-5xl mx-auto pt-6 px-4 md:px-8">
         
-        {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <button onClick={() => navigate(-1)} className="hover:bg-surface p-2 rounded-full transition"><X size={24} /></button>
@@ -111,11 +101,14 @@ const CreateListingScreen = () => {
 
           {/* --- FORM SECTION --- */}
           <div className="w-full md:w-2/3 space-y-6">
+            
+            {/* Title */}
             <div>
                 <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Title</label>
                 <input type="text" className="w-full bg-surface text-white p-4 rounded-xl border border-transparent focus:border-primary outline-none transition text-lg" placeholder="e.g. Calculus Textbook, barely used" />
             </div>
             
+            {/* ROW 1: Price & Category */}
             <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                     <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Price</label>
@@ -142,23 +135,44 @@ const CreateListingScreen = () => {
                 </div>
             </div>
 
-            {/* --- HALL/LOCATION SELECTOR --- */}
-            <div>
-                <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Hall / Location</label>
-                <div className="relative">
-                    <div className="absolute left-4 top-4 text-textMuted pointer-events-none">
-                        <MapPin size={20} />
+            {/* ROW 2: Condition & Hall */}
+            <div className="flex flex-col md:flex-row gap-4">
+                
+                {/* --- NEW CONDITION SELECTOR --- */}
+                <div className="flex-1">
+                    <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Condition</label>
+                    <div className="relative">
+                        <div className="absolute left-4 top-4 text-textMuted pointer-events-none">
+                            <Tag size={20} />
+                        </div>
+                        <select className="w-full bg-surface text-white p-4 pl-12 rounded-xl border border-transparent focus:border-primary outline-none appearance-none cursor-pointer text-lg">
+                            <option>Select Condition...</option>
+                            {conditions.map((cond, index) => (
+                                <option key={index} value={cond}>{cond}</option>
+                            ))}
+                        </select>
+                        <ChevronDown className="absolute right-4 top-5 text-textMuted pointer-events-none" size={20} />
                     </div>
-                    <select className="w-full bg-surface text-white p-4 pl-12 rounded-xl border border-transparent focus:border-primary outline-none appearance-none cursor-pointer text-lg">
-                        <option>Select your Hall...</option>
-                        {halls.map((hall, index) => (
-                            <option key={index} value={hall}>{hall}</option>
-                        ))}
-                    </select>
-                    <ChevronDown className="absolute right-4 top-5 text-textMuted pointer-events-none" size={20} />
+                </div>
+
+                <div className="flex-1">
+                    <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Hall / Location</label>
+                    <div className="relative">
+                        <div className="absolute left-4 top-4 text-textMuted pointer-events-none">
+                            <MapPin size={20} />
+                        </div>
+                        <select className="w-full bg-surface text-white p-4 pl-12 rounded-xl border border-transparent focus:border-primary outline-none appearance-none cursor-pointer text-lg">
+                            <option>Select Hall...</option>
+                            {halls.map((hall, index) => (
+                                <option key={index} value={hall}>{hall}</option>
+                            ))}
+                        </select>
+                        <ChevronDown className="absolute right-4 top-5 text-textMuted pointer-events-none" size={20} />
+                    </div>
                 </div>
             </div>
 
+            {/* Description */}
             <div>
                 <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Description</label>
                 <textarea className="w-full bg-surface text-white p-4 rounded-xl h-40 border border-transparent focus:border-primary outline-none resize-none transition text-lg" placeholder="Describe your item..." />
