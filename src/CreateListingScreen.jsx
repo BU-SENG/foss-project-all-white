@@ -4,6 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 const CreateListingScreen = () => {
   const navigate = useNavigate();
+
+  // --- NEW FUNCTION TO HANDLE POSTING ---
+  const handlePost = () => {
+    // In a real app, this would send data to the backend
+    alert("Success! Your item has been posted to Campus Marketplace.");
+    navigate('/'); // Redirect to Home
+  };
+
   return (
     <div className="min-h-screen bg-background text-white pb-24 md:pb-10">
       <div className="max-w-5xl mx-auto pt-6 px-4 md:px-8">
@@ -14,12 +22,11 @@ const CreateListingScreen = () => {
             <button onClick={() => navigate(-1)} className="hover:bg-surface p-2 rounded-full transition"><X size={24} /></button>
             <h1 className="text-2xl md:text-3xl font-bold">List Your Item</h1>
           </div>
-          <button className="hidden md:block bg-primary text-black px-8 py-2 rounded-full font-bold hover:bg-green-400 transition">Post Now</button>
+          {/* Desktop Button */}
+          <button onClick={handlePost} className="hidden md:block bg-primary text-black px-8 py-2 rounded-full font-bold hover:bg-green-400 transition">Post Now</button>
         </div>
 
-        {/* Desktop Split Layout */}
         <div className="flex flex-col md:flex-row gap-8">
-          
           {/* Left: Image Upload */}
           <div className="w-full md:w-1/3">
             <div className="border-2 border-dashed border-surface hover:border-primary rounded-3xl h-64 md:h-96 flex flex-col items-center justify-center cursor-pointer bg-surface/20 transition group">
@@ -41,7 +48,7 @@ const CreateListingScreen = () => {
             <div>
                 <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Price</label>
                 <div className="flex items-center bg-surface rounded-xl border border-transparent focus-within:border-primary px-4 transition">
-                    <span className="text-textMuted mr-2 text-lg">$</span>
+                    <span className="text-textMuted mr-2 text-lg">₦</span>
                     <input type="number" className="bg-transparent text-white w-full p-4 outline-none text-lg" placeholder="0.00" />
                 </div>
             </div>
@@ -65,7 +72,7 @@ const CreateListingScreen = () => {
             </div>
 
             {/* Mobile Post Button */}
-            <button className="md:hidden w-full bg-primary text-black py-4 rounded-xl font-bold text-lg shadow-lg mt-4">Post Item</button>
+            <button onClick={handlePost} className="md:hidden w-full bg-primary text-black py-4 rounded-xl font-bold text-lg shadow-lg mt-4">Post Item</button>
           </div>
         </div>
       </div>
