@@ -9,14 +9,23 @@ const LoginScreen = () => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email && password) {
-      login(email, password);
-      navigate('/'); // Go to Home after login
-    } else {
-      alert("Please fill in all fields");
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+    
+    setLoading(true);
+    try {
+        await login(email, password); // API call
+        navigate('/'); // Redirect on success
+    } catch (error) {
+        alert("Login failed: " + error.message);
+    } finally {
+        setLoading(false);
     }
   };
 
@@ -53,8 +62,8 @@ const LoginScreen = () => {
             />
           </div>
 
-          <button type="submit" className="w-full bg-primary text-black font-bold py-4 rounded-xl hover:bg-green-400 transition mt-4">
-            Sign In
+          <button type="submit" disabled={loading} className="w-full bg-primary text-black font-bold py-4 rounded-xl hover:bg-green-400 transition mt-4 disabled:bg-gray-600 disabled:text-gray-400">
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
