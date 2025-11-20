@@ -1,19 +1,26 @@
 import React from 'react';
-import { Home, PlusCircle, MessageSquare, User, ShoppingBag } from 'lucide-react';
+import { Home, PlusCircle, MessageSquare, User, ShoppingBag, LogIn } from 'lucide-react'; // Added LogIn Icon
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from './AuthContext'; // Import Auth Hook
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const activeTab = location.pathname;
+  const { user } = useAuth(); // Check if user exists
 
   const tabs = [
     { name: 'Home', icon: Home, path: '/' },
-    // Removed 'highlight: true' so it behaves like a normal button now
-    { name: 'Post', icon: PlusCircle, path: '/create' }, 
+    { name: 'Post', icon: PlusCircle, path: '/create' },
     { name: 'Chat', icon: MessageSquare, path: '/chat' },
-    { name: 'Profile', icon: User, path: '/profile' },
+    // Conditional Logic for the last tab
+    user 
+      ? { name: 'Profile', icon: User, path: '/profile' }
+      : { name: 'Sign In', icon: LogIn, path: '/login' }
   ];
+
+  // If we are on Login or Signup page, DON'T show the navbar
+  if (activeTab === '/login' || activeTab === '/signup') return null;
 
   return (
     <>
@@ -49,9 +56,6 @@ const Navbar = () => {
               onClick={() => navigate(tab.path)}
               className="flex flex-col items-center justify-center w-12"
             >
-              {/* We removed the conditional check here. 
-                 Now EVERY button renders exactly the same way.
-              */}
               <tab.icon 
                 size={24} 
                 color={activeTab === tab.path ? '#00E359' : '#8E9B93'} 
