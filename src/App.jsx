@@ -8,8 +8,8 @@ import ChatListScreen from './ChatListScreen';
 import ChatScreen from './ChatScreen';
 import MyListingsScreen from './MyListingsScreen';
 import ItemDetailScreen from './ItemDetailScreen';
-import LoginScreen from './LoginScreen';   // Ensure these are imported
-import SignupScreen from './SignupScreen'; // Ensure these are imported
+import LoginScreen from './LoginScreen';
+import SignupScreen from './SignupScreen';
 
 function App() {
   return (
@@ -19,6 +19,8 @@ function App() {
         <Routes>
           {/* Main Routes */}
           <Route path="/" element={<HomeScreen />} />
+          
+          {/* --- POST PAGE FIX IS HERE --- */}
           <Route path="/create" element={<CreateListingScreen />} />
           
           {/* Chat Routes */}

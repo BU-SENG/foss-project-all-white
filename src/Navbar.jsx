@@ -1,18 +1,18 @@
 import React from 'react';
-import { Home, PlusCircle, MessageSquare, User, ShoppingBag, LogIn } from 'lucide-react'; // Added LogIn Icon
+import { Home, PlusCircle, MessageSquare, User, ShoppingBag, LogIn } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Import Auth Hook
+import { useAuth } from './AuthContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const activeTab = location.pathname;
-  const { user } = useAuth(); // Check if user exists
+  const { user } = useAuth();
 
   const tabs = [
     { name: 'Home', icon: Home, path: '/' },
-    { name: 'Post', icon: PlusCircle, path: '/create' },
-    { name: 'Chat', icon: MessageSquare, path: '/chat' },
+    { name: 'Post', icon: PlusCircle, path: '/create' }, // CHECK: This path is correct
+    { name: 'Chat', icon: MessageSquare, path: '/chat' },  // CHECK: This path is correct
     // Conditional Logic for the last tab
     user 
       ? { name: 'Profile', icon: User, path: '/profile' }
