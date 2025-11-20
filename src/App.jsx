@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 
 import HomeScreen from './HomeScreen';
 import CreateListingScreen from './CreateListingScreen';
-import ChatListScreen from './ChatListScreen';
+import ChatListScreen from './ChatListScreen'; 
 import ChatScreen from './ChatScreen';
 import MyListingsScreen from './MyListingsScreen';
 import ItemDetailScreen from './ItemDetailScreen';
@@ -20,7 +20,7 @@ function App() {
           {/* Main Routes */}
           <Route path="/" element={<HomeScreen />} />
           
-          {/* --- POST PAGE FIX IS HERE --- */}
+          {/* --- FIX: POST PAGE MUST RENDER CreateListingScreen --- */}
           <Route path="/create" element={<CreateListingScreen />} />
           
           {/* Chat Routes */}

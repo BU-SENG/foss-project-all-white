@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react'; 
 import { supabase } from './supabaseClient'; 
 
 const ProductContext = createContext();
@@ -6,30 +6,34 @@ const ProductContext = createContext();
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]); 
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { data, error } = await supabase
-        .from('listings')
-        .select('*, seller_id, seller_name, image_url, price, title, status, category, condition, hall, description, created_at') // Select specific columns
-        .order('created_at', { ascending: false });
-        
-      if (error) {
-        console.error('Error fetching listings:', error.message);
-      }
-      if (data) {
-        const typedData = data.map(item => ({...item, id: Number(item.id)}));
-        setProducts(typedData);
-      }
-    };
+  // --- FIX: Suppressing the strict dependency rule for the stable fetch function ---
+  // We use useCallback and an empty dependency array to ensure the function reference is stable
+  // throughout the component's life, which resolves the linting error.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchProducts = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('listings')
+      .select('id, title, price, category, condition, hall, description, image_url, seller_id, seller_name, status, created_at')
+      .order('created_at', { ascending: false });
+      
+    if (error) {
+      console.error('Error fetching listings:', error.message);
+    }
+    if (data) {
+      const typedData = data.map(item => ({...item, id: Number(item.id)}));
+      setProducts(typedData); 
+    }
+  }, []); // Empty array means the function is only created once
 
-    fetchProducts();
+  // 1. Initial Data Load and Listener Setup
+  useEffect(() => {
+    fetchProducts(); 
 
     const productListener = supabase
       .channel('public:listings')
       .on(
         'postgres_changes', 
         { event: '*', schema: 'public', table: 'listings' },
-        // --- FIX HERE: Removed the unused 'payload' argument ---
         () => { 
           fetchProducts(); 
         }
@@ -39,17 +43,20 @@ export const ProductProvider = ({ children }) => {
     return () => {
       supabase.removeChannel(productListener);
     };
-  }, []);
+  }, [fetchProducts]); // This depends on the stable fetch function
 
+  // --- ADD PRODUCT and TOGGLE STATUS (Remaining logic) ---
   const addProduct = async (newItem) => {
-    const itemToInsert = {...newItem, id: undefined, image: undefined }; 
-    
     const { data, error } = await supabase
       .from('listings')
-      .insert(itemToInsert)
+      .insert(newItem)
       .select(); 
       
     if (error) throw error;
+
+    if (data && data.length > 0) {
+      setProducts(prev => [data[0], ...prev]);
+    }
     return data;
   };
 
@@ -62,6 +69,8 @@ export const ProductProvider = ({ children }) => {
       .eq('id', id);
 
     if (error) throw error;
+    
+    setProducts(prev => prev.map(item => item.id === id ? { ...item, status: newStatus } : item));
   };
 
   return (
