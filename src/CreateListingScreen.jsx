@@ -8,7 +8,7 @@ const CreateListingScreen = () => {
   const [selectedImages, setSelectedImages] = useState([]);
   const fileInputRef = useRef(null);
 
-  // Sorted List of Halls
+  // Updated Sorted List of Halls
   const halls = [
     "Ameyo",
     "Bethel",
@@ -17,15 +17,18 @@ const CreateListingScreen = () => {
     "Emerald",
     "FAD",
     "Gideon Troopers",
+    "Havilah",       // Added
     "Neal Wilson",
     "Nelson Mandela",
     "Nyberg",
+    "Off-Campus",    // Added
     "Ogden",
     "Platinum",
     "Queen Esther",
     "Samuel Akande",
     "Sapphire",
     "Topaz",
+    "Welch",         // Added
     "Winslow"
   ];
 
@@ -139,7 +142,7 @@ const CreateListingScreen = () => {
                 </div>
             </div>
 
-            {/* --- NEW HALL/LOCATION SELECTOR --- */}
+            {/* --- HALL/LOCATION SELECTOR --- */}
             <div>
                 <label className="block text-textMuted mb-2 text-sm font-bold uppercase tracking-wider">Hall / Location</label>
                 <div className="relative">
